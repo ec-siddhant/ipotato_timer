@@ -45,3 +45,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+#mason related
+mason.yaml
+mason-lock.json
+.mason/bricks.json
