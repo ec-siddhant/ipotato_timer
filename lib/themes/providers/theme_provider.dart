@@ -11,11 +11,12 @@ class _AppColors {
   static const Color materialthemesyslightsecondary = Color(0xff216c2e);
   static const Color materialthemesyslightonsecondary = Color(0xffffffff);
   static const Color materialthemesyslightonsecondarycontainer =
-      Color(0xff002106);
+      Color(0xffa7f5a7);
   static const Color materialthemesyslighttertiary = Color(0xff5b5b7d);
   static const Color materialthemesyslightontertiary = Color(0xffffffff);
   static const Color materialthemesyslightontertiarycontainer =
-      Color(0xff181837);
+      Color(0xffe1dfff);
+  static const Color materialthemesysreadonlysurface = Color(0xff006782);
   static const Color materialthemesyslighterror = Color(0xffba1b1b);
   static const Color materialthemesyslightonerror = Color(0xffffffff);
   static const Color materialthemesyslightbackground = Color(0xfffbfcfe);
@@ -41,9 +42,13 @@ class _AppColors {
   static const Color materialthemesysdarksurface = Color(0xff191c1e);
   static const Color materialthemesysdarkonsurface = Color(0xffe1e3e5);
   static const Color materialthemereadonlylightwhite = Color(0xffffffff);
+  static const Color materialthemereadonlylightblack = Color(0xff000000);
+  static const Color materialthemereadonlydarkblack = Color(0xff000000);
   static const Color materialthemesysdarkinverseprimary = Color(0xff006782);
   static const Color materialthemesyslightinverseprimary = Color(0xff006782);
-
+  static const Color materialthemesyslightreadonlysurface2 = Color(0xffE6F0F3);
+  static const Color materialthemesysdarkreadonlysurface2 = Color(0xffE6F0F3);
+  static const Color materialthemesyslightoutline = Color(0xff70787D);
 }
 
 class ThemeProvider extends ChangeNotifier {
@@ -66,12 +71,16 @@ class ThemeProvider extends ChangeNotifier {
 
 class MyThemes {
   final _appBarTheme =
-       AppBarTheme(backgroundColor: _AppColors.materialthemesyslightsecondary);
+      AppBarTheme(backgroundColor: _AppColors.materialthemesyslightsecondary);
+
+  var _floatingActionButtonTheme = FloatingActionButtonThemeData(
+      backgroundColor: _AppColors.materialthemesyslightprimarycontainer);
 
   ThemeData buildLightTheme() {
     return ThemeData(
         brightness: Brightness.light,
         appBarTheme: _appBarTheme,
+        floatingActionButtonTheme: _floatingActionButtonTheme,
         colorScheme: _lightColorScheme,
         fontFamily: 'Roboto',
         scaffoldBackgroundColor: _AppColors.materialthemereadonlylightwhite,
@@ -82,6 +91,7 @@ class MyThemes {
   ThemeData buildDarkTheme() {
     return ThemeData(
         appBarTheme: _appBarTheme,
+        floatingActionButtonTheme: _floatingActionButtonTheme,
         scaffoldBackgroundColor: _AppColors.materialthemereadonlylightwhite,
         brightness: Brightness.dark,
         colorScheme: _darkColorScheme,
@@ -113,29 +123,30 @@ const ColorScheme _lightColorScheme = ColorScheme(
     brightness: Brightness.light,
     background: _AppColors.materialthemesyslightbackground,
     error: _AppColors.materialthemesyslighterror,
-    inversePrimary:
-        _AppColors.materialthemesyslightinverseprimary,
+    inversePrimary: _AppColors.materialthemesyslightinverseprimary,
     onPrimary: _AppColors.materialthemesyslightonprimary,
     primaryContainer: _AppColors.materialthemesyslightprimarycontainer,
     onPrimaryContainer: _AppColors.materialthemesyslightonprimarycontainer,
     onSecondary: _AppColors.materialthemesyslightonsecondary,
     onSecondaryContainer: _AppColors.materialthemesyslightonsecondarycontainer,
-    onSurface: _AppColors.materialthemesyslightonsurface,
+    onSurface: _AppColors.materialthemesyslightoutline,
+    outline: _AppColors.materialthemesyslightoutline,
     onBackground: _AppColors.materialthemesyslightonbackground,
     onError: _AppColors.materialthemesyslightonerror,
     primary: _AppColors.materialthemesyslightprimary,
     tertiary: _AppColors.materialthemesyslighttertiary,
     secondary: _AppColors.materialthemesyslightsecondary,
     surface: _AppColors.materialthemesyslightsurface,
+    surfaceTint: _AppColors.materialthemesyslightreadonlysurface2,
     onTertiary: _AppColors.materialthemesyslightontertiary,
+    onInverseSurface: _AppColors.materialthemereadonlylightblack,
     onTertiaryContainer: _AppColors.materialthemesyslightontertiarycontainer);
 
 const ColorScheme _darkColorScheme = ColorScheme(
     brightness: Brightness.dark,
     background: _AppColors.materialthemesysdarkbackground,
     error: _AppColors.materialthemesysdarkerror,
-    inversePrimary:
-        _AppColors.materialthemesysdarkinverseprimary,
+    inversePrimary: _AppColors.materialthemesysdarkinverseprimary,
     onPrimary: _AppColors.materialthemesysdarkonprimary,
     primaryContainer: _AppColors.materialthemesysdarkprimarycontainer,
     onPrimaryContainer: _AppColors.materialthemesysdarkonprimarycontainer,
@@ -149,6 +160,8 @@ const ColorScheme _darkColorScheme = ColorScheme(
     secondary: _AppColors.materialthemesysdarksecondary,
     surface: _AppColors.materialthemesysdarksurface,
     onTertiary: _AppColors.materialthemesysdarkontertiary,
+    onInverseSurface: _AppColors.materialthemereadonlydarkblack,
+    surfaceTint: _AppColors.materialthemesysdarkreadonlysurface2,
     onTertiaryContainer: _AppColors.materialthemesysdarkontertiarycontainer);
 
 class TextStyles {
@@ -431,6 +444,7 @@ class TextStyles {
         fontStyle: FontStyle.normal,
         fontWeight: FontWeight.w400,
         height: 20 / 14,
+        color: _AppColors.materialthemereadonlylightblack,
         letterSpacing: 0.25,
       );
 

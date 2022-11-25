@@ -1,12 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'task_model.freezed.dart';
 
-@freezed
+@unfreezed
 class TaskModel with _$TaskModel {
-  const factory TaskModel({
-    required final int index,
+  factory TaskModel({
     required String taskName,
     required String taskDescription,
+    required bool taskComplete,
     required Duration taskDuration,
   }) = _TaskModel;
 
