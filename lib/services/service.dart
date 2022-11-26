@@ -1,9 +1,11 @@
-// import 'package:get_it/get_it.dart';
-//
-// final getIt = GetIt.instance;
-//
-// void setup() {
-//   getIt.registerSingleton<AppModel>(AppModel());
-//
-// // Alternatively you could write it if you don't like global variables
-// }
+import 'package:get_it/get_it.dart';
+import 'package:ipotato_timer/database/db.dart';
+import 'package:ipotato_timer/stores/timers_store.dart';
+
+final getIt = GetIt.instance;
+
+Future<void> initServices() async {
+  getIt.registerLazySingleton<TimersStore>(() =>TimersStore());
+  getIt.registerLazySingleton<MyTaskDatabase>(() =>MyTaskDatabase());
+
+}

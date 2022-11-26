@@ -2,21 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ipotato_timer/database/db.dart';
 import 'package:ipotato_timer/screens/home_screen/home_screen.dart';
+import 'package:ipotato_timer/services/service.dart';
 import 'package:ipotato_timer/stores/timers_store.dart';
 import 'package:ipotato_timer/themes/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
-final getIt = GetIt.instance;
-
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  init();
+
+  initServices();
+  syncTasksWithDatabase();
+
   runApp(MyApp());
 }
 
-Future<void> init() async {
-  GetIt.I.registerSingleton<TimersStore>(TimersStore());
-  GetIt.I.registerSingleton<MyTimerDatabase>(MyTimerDatabase());
+Future<void> syncTasksWithDatabase() async {
+  final timerDB = getIt<MyTaskDatabase>();
+  final timersStore = getIt<TimersStore>();
+  timersStore.addAllTasks(await timerDB.getAllTasks());
 }
 
 class MyApp extends StatelessWidget {
@@ -30,7 +33,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<ThemeProvider>(create: (ctx) => ThemeProvider()),
       ],
       child: FutureBuilder(
-          future: GetIt.instance.allReady(),
+          future: getIt.allReady(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return MaterialApp(

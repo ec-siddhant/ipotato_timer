@@ -7,19 +7,22 @@ part of 'db.dart';
 // **************************************************************************
 
 // ignore_for_file: type=lint
-class TimersTableData extends DataClass implements Insertable<TimersTableData> {
+class TasksTableData extends DataClass implements Insertable<TasksTableData> {
+  final String id;
   final String title;
   final String description;
   final int timeLeft;
   final bool finished;
-  const TimersTableData(
-      {required this.title,
+  const TasksTableData(
+      {required this.id,
+      required this.title,
       required this.description,
       required this.timeLeft,
       required this.finished});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
     map['title'] = Variable<String>(title);
     map['description'] = Variable<String>(description);
     map['time_left'] = Variable<int>(timeLeft);
@@ -27,8 +30,9 @@ class TimersTableData extends DataClass implements Insertable<TimersTableData> {
     return map;
   }
 
-  TimersTableCompanion toCompanion(bool nullToAbsent) {
-    return TimersTableCompanion(
+  TasksTableCompanion toCompanion(bool nullToAbsent) {
+    return TasksTableCompanion(
+      id: Value(id),
       title: Value(title),
       description: Value(description),
       timeLeft: Value(timeLeft),
@@ -36,10 +40,11 @@ class TimersTableData extends DataClass implements Insertable<TimersTableData> {
     );
   }
 
-  factory TimersTableData.fromJson(Map<String, dynamic> json,
+  factory TasksTableData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TimersTableData(
+    return TasksTableData(
+      id: serializer.fromJson<String>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       description: serializer.fromJson<String>(json['description']),
       timeLeft: serializer.fromJson<int>(json['timeLeft']),
@@ -50,6 +55,7 @@ class TimersTableData extends DataClass implements Insertable<TimersTableData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
       'title': serializer.toJson<String>(title),
       'description': serializer.toJson<String>(description),
       'timeLeft': serializer.toJson<int>(timeLeft),
@@ -57,12 +63,14 @@ class TimersTableData extends DataClass implements Insertable<TimersTableData> {
     };
   }
 
-  TimersTableData copyWith(
-          {String? title,
+  TasksTableData copyWith(
+          {String? id,
+          String? title,
           String? description,
           int? timeLeft,
           bool? finished}) =>
-      TimersTableData(
+      TasksTableData(
+        id: id ?? this.id,
         title: title ?? this.title,
         description: description ?? this.description,
         timeLeft: timeLeft ?? this.timeLeft,
@@ -70,7 +78,8 @@ class TimersTableData extends DataClass implements Insertable<TimersTableData> {
       );
   @override
   String toString() {
-    return (StringBuffer('TimersTableData(')
+    return (StringBuffer('TasksTableData(')
+          ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
           ..write('timeLeft: $timeLeft, ')
@@ -80,44 +89,51 @@ class TimersTableData extends DataClass implements Insertable<TimersTableData> {
   }
 
   @override
-  int get hashCode => Object.hash(title, description, timeLeft, finished);
+  int get hashCode => Object.hash(id, title, description, timeLeft, finished);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TimersTableData &&
+      (other is TasksTableData &&
+          other.id == this.id &&
           other.title == this.title &&
           other.description == this.description &&
           other.timeLeft == this.timeLeft &&
           other.finished == this.finished);
 }
 
-class TimersTableCompanion extends UpdateCompanion<TimersTableData> {
+class TasksTableCompanion extends UpdateCompanion<TasksTableData> {
+  final Value<String> id;
   final Value<String> title;
   final Value<String> description;
   final Value<int> timeLeft;
   final Value<bool> finished;
-  const TimersTableCompanion({
+  const TasksTableCompanion({
+    this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.description = const Value.absent(),
     this.timeLeft = const Value.absent(),
     this.finished = const Value.absent(),
   });
-  TimersTableCompanion.insert({
+  TasksTableCompanion.insert({
+    required String id,
     required String title,
     required String description,
     required int timeLeft,
     required bool finished,
-  })  : title = Value(title),
+  })  : id = Value(id),
+        title = Value(title),
         description = Value(description),
         timeLeft = Value(timeLeft),
         finished = Value(finished);
-  static Insertable<TimersTableData> custom({
+  static Insertable<TasksTableData> custom({
+    Expression<String>? id,
     Expression<String>? title,
     Expression<String>? description,
     Expression<int>? timeLeft,
     Expression<bool>? finished,
   }) {
     return RawValuesInsertable({
+      if (id != null) 'id': id,
       if (title != null) 'title': title,
       if (description != null) 'description': description,
       if (timeLeft != null) 'time_left': timeLeft,
@@ -125,12 +141,14 @@ class TimersTableCompanion extends UpdateCompanion<TimersTableData> {
     });
   }
 
-  TimersTableCompanion copyWith(
-      {Value<String>? title,
+  TasksTableCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? title,
       Value<String>? description,
       Value<int>? timeLeft,
       Value<bool>? finished}) {
-    return TimersTableCompanion(
+    return TasksTableCompanion(
+      id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
       timeLeft: timeLeft ?? this.timeLeft,
@@ -141,6 +159,9 @@ class TimersTableCompanion extends UpdateCompanion<TimersTableData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
     if (title.present) {
       map['title'] = Variable<String>(title.value);
     }
@@ -158,7 +179,8 @@ class TimersTableCompanion extends UpdateCompanion<TimersTableData> {
 
   @override
   String toString() {
-    return (StringBuffer('TimersTableCompanion(')
+    return (StringBuffer('TasksTableCompanion(')
+          ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
           ..write('timeLeft: $timeLeft, ')
@@ -168,12 +190,19 @@ class TimersTableCompanion extends UpdateCompanion<TimersTableData> {
   }
 }
 
-class $TimersTableTable extends TimersTable
-    with TableInfo<$TimersTableTable, TimersTableData> {
+class $TasksTableTable extends TasksTable
+    with TableInfo<$TasksTableTable, TasksTableData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TimersTableTable(this.attachedDatabase, [this._alias]);
+  $TasksTableTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: 'UNIQUE');
   final VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
@@ -201,16 +230,21 @@ class $TimersTableTable extends TimersTable
       defaultConstraints: 'CHECK ("finished" IN (0, 1))');
   @override
   List<GeneratedColumn> get $columns =>
-      [title, description, timeLeft, finished];
+      [id, title, description, timeLeft, finished];
   @override
-  String get aliasedName => _alias ?? 'timers_table';
+  String get aliasedName => _alias ?? 'tasks_table';
   @override
-  String get actualTableName => 'timers_table';
+  String get actualTableName => 'tasks_table';
   @override
-  VerificationContext validateIntegrity(Insertable<TimersTableData> instance,
+  VerificationContext validateIntegrity(Insertable<TasksTableData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
     if (data.containsKey('title')) {
       context.handle(
           _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
@@ -243,9 +277,11 @@ class $TimersTableTable extends TimersTable
   @override
   Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
   @override
-  TimersTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  TasksTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TimersTableData(
+    return TasksTableData(
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
       title: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
       description: attachedDatabase.options.types
@@ -258,17 +294,17 @@ class $TimersTableTable extends TimersTable
   }
 
   @override
-  $TimersTableTable createAlias(String alias) {
-    return $TimersTableTable(attachedDatabase, alias);
+  $TasksTableTable createAlias(String alias) {
+    return $TasksTableTable(attachedDatabase, alias);
   }
 }
 
-abstract class _$MyTimerDatabase extends GeneratedDatabase {
-  _$MyTimerDatabase(QueryExecutor e) : super(e);
-  late final $TimersTableTable timersTable = $TimersTableTable(this);
+abstract class _$MyTaskDatabase extends GeneratedDatabase {
+  _$MyTaskDatabase(QueryExecutor e) : super(e);
+  late final $TasksTableTable tasksTable = $TasksTableTable(this);
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [timersTable];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [tasksTable];
 }

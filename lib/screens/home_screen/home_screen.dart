@@ -8,15 +8,9 @@ import 'package:ipotato_timer/stores/timers_store.dart';
 import 'package:ipotato_timer/widgets/no_tasks_placeholder.dart';
 import 'package:ipotato_timer/widgets/single_task_widget.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  final _timersStore = GetIt.I<TimersStore>();
+  final timersStore = GetIt.I<TimersStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context) {
           print("changed");
 
-          return _timersStore.taskList.isEmpty
+          return timersStore.taskList.isEmpty
               ? const NoTasksPlaceHolder()
               : ListView.builder(
-                  itemCount: _timersStore.taskList.length,
+                  itemCount: timersStore.taskList.length,
                   itemBuilder: (context, i) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(

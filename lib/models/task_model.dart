@@ -6,6 +6,7 @@ part 'task_model.freezed.dart';
 @unfreezed
 class TaskModel with _$TaskModel {
   factory TaskModel({
+    required String taskID,
     required String taskName,
     required String taskDescription,
     required bool taskComplete,

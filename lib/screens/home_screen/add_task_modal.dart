@@ -9,10 +9,11 @@ import 'package:ipotato_timer/widgets/duration_selector_widget.dart';
 class AddTimerModal {
   var taskTitleController = TextEditingController();
   var taskDescriptionController = TextEditingController();
-  late Duration maxDuration;
+  late Duration maxDuration = const Duration(seconds: 0);
   var formKey = GlobalKey<FormState>();
   bool isAutoValidate = false;
-  final _myTimerDB = GetIt.I<MyTimerDatabase>();
+
+  bool timerError = false;
 
   showAddTimerModalSheet(BuildContext buildContext) {
     showModalBottomSheet(
@@ -89,6 +90,20 @@ class AddTimerModal {
                                             maxDuration = duration;
                                           },
                                         ),
+                                        if (timerError)
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 8.0),
+                                            child: Text(
+                                              "Duration should be at least 1 second",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelSmall!
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .error),
+                                            ),
+                                          ),
                                         const Spacer(),
                                       ],
                                     ),
@@ -111,30 +126,35 @@ class AddTimerModal {
                                       ),
                                     ),
                                     onPressed: () {
-                                      if (maxDuration.inSeconds > 0) {
-                                        final timersStore =
-                                            GetIt.I<TimersStore>();
-                                        timersStore.addTask(TaskModel(
-                                            taskName: taskTitleController.text,
-                                            taskDescription:
-                                                taskDescriptionController.text,
-                                            taskComplete: false,
-                                            taskDuration: maxDuration,
-                                            ownTimer: null));
+                                      if (formKey.currentState!.validate()) {
+                                        if (maxDuration.inSeconds > 0) {
+                                          setState(() {
+                                            timerError = false;
+                                          });
+                                          final timersStore =
+                                              GetIt.I<TimersStore>();
 
-                                        _myTimerDB.insertTask(TimersTableData(
-                                            title: taskTitleController.text,
-                                            description:
-                                                taskDescriptionController.text,
-                                            timeLeft: maxDuration.inSeconds,
-                                            finished: false));
+                                          final String taskID = DateTime.now()
+                                              .microsecondsSinceEpoch
+                                              .toString();
 
-                                        Navigator.pop(context);
-                                      } else {
-                                        ScaffoldMessenger.of(buildContext)
-                                            .showSnackBar(const SnackBar(
-                                                content: Text(
-                                                    "Please Add Duration")));
+                                          timersStore.addTask(TaskModel(
+                                              taskID: taskID,
+                                              taskName:
+                                                  taskTitleController.text,
+                                              taskDescription:
+                                                  taskDescriptionController
+                                                      .text,
+                                              taskComplete: false,
+                                              taskDuration: maxDuration,
+                                              ownTimer: null));
+
+                                          Navigator.pop(context);
+                                        } else {
+                                          setState(() {
+                                            timerError = true;
+                                          });
+                                        }
                                       }
                                     },
                                     child: Text(

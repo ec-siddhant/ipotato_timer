@@ -16,6 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TaskModel {
+  String get taskID => throw _privateConstructorUsedError;
+  set taskID(String value) => throw _privateConstructorUsedError;
   String get taskName => throw _privateConstructorUsedError;
   set taskName(String value) => throw _privateConstructorUsedError;
   String get taskDescription => throw _privateConstructorUsedError;
@@ -38,7 +40,8 @@ abstract class $TaskModelCopyWith<$Res> {
       _$TaskModelCopyWithImpl<$Res, TaskModel>;
   @useResult
   $Res call(
-      {String taskName,
+      {String taskID,
+      String taskName,
       String taskDescription,
       bool taskComplete,
       Duration taskDuration,
@@ -58,6 +61,7 @@ class _$TaskModelCopyWithImpl<$Res, $Val extends TaskModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? taskID = null,
     Object? taskName = null,
     Object? taskDescription = null,
     Object? taskComplete = null,
@@ -65,6 +69,10 @@ class _$TaskModelCopyWithImpl<$Res, $Val extends TaskModel>
     Object? ownTimer = freezed,
   }) {
     return _then(_value.copyWith(
+      taskID: null == taskID
+          ? _value.taskID
+          : taskID // ignore: cast_nullable_to_non_nullable
+              as String,
       taskName: null == taskName
           ? _value.taskName
           : taskName // ignore: cast_nullable_to_non_nullable
@@ -97,7 +105,8 @@ abstract class _$$_TaskModelCopyWith<$Res> implements $TaskModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String taskName,
+      {String taskID,
+      String taskName,
       String taskDescription,
       bool taskComplete,
       Duration taskDuration,
@@ -115,6 +124,7 @@ class __$$_TaskModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? taskID = null,
     Object? taskName = null,
     Object? taskDescription = null,
     Object? taskComplete = null,
@@ -122,6 +132,10 @@ class __$$_TaskModelCopyWithImpl<$Res>
     Object? ownTimer = freezed,
   }) {
     return _then(_$_TaskModel(
+      taskID: null == taskID
+          ? _value.taskID
+          : taskID // ignore: cast_nullable_to_non_nullable
+              as String,
       taskName: null == taskName
           ? _value.taskName
           : taskName // ignore: cast_nullable_to_non_nullable
@@ -150,12 +164,15 @@ class __$$_TaskModelCopyWithImpl<$Res>
 
 class _$_TaskModel implements _TaskModel {
   _$_TaskModel(
-      {required this.taskName,
+      {required this.taskID,
+      required this.taskName,
       required this.taskDescription,
       required this.taskComplete,
       required this.taskDuration,
       required this.ownTimer});
 
+  @override
+  String taskID;
   @override
   String taskName;
   @override
@@ -169,7 +186,7 @@ class _$_TaskModel implements _TaskModel {
 
   @override
   String toString() {
-    return 'TaskModel(taskName: $taskName, taskDescription: $taskDescription, taskComplete: $taskComplete, taskDuration: $taskDuration, ownTimer: $ownTimer)';
+    return 'TaskModel(taskID: $taskID, taskName: $taskName, taskDescription: $taskDescription, taskComplete: $taskComplete, taskDuration: $taskDuration, ownTimer: $ownTimer)';
   }
 
   @JsonKey(ignore: true)
@@ -181,12 +198,16 @@ class _$_TaskModel implements _TaskModel {
 
 abstract class _TaskModel implements TaskModel {
   factory _TaskModel(
-      {required String taskName,
+      {required String taskID,
+      required String taskName,
       required String taskDescription,
       required bool taskComplete,
       required Duration taskDuration,
       required Timer? ownTimer}) = _$_TaskModel;
 
+  @override
+  String get taskID;
+  set taskID(String value);
   @override
   String get taskName;
   set taskName(String value);

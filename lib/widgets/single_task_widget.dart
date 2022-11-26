@@ -32,7 +32,7 @@ class SingleTaskWidget extends StatelessWidget {
                 if (!timersStore.taskList[index].taskComplete) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Spacer(),
                       Text(
@@ -83,6 +83,9 @@ class SingleTaskWidget extends StatelessWidget {
                           ),
                         ),
                       ),
+                      const SizedBox(
+                        width: 20,
+                      ),
                     ],
                   );
                 } else {
@@ -129,7 +132,7 @@ class SingleTaskWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 5,
+              height: 45,
             ),
             if (timersStore.taskList[index].taskComplete)
               SizedBox(
