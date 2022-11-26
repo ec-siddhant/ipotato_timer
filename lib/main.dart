@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:ipotato_timer/database/db.dart';
 import 'package:ipotato_timer/screens/home_screen/home_screen.dart';
 import 'package:ipotato_timer/stores/timers_store.dart';
 import 'package:ipotato_timer/themes/providers/theme_provider.dart';
@@ -15,6 +16,7 @@ void main() {
 
 Future<void> init() async {
   GetIt.I.registerSingleton<TimersStore>(TimersStore());
+  GetIt.I.registerSingleton<MyTimerDatabase>(MyTimerDatabase());
 }
 
 class MyApp extends StatelessWidget {

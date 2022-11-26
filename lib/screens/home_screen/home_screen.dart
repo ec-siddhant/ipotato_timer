@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:ipotato_timer/database/db.dart';
 import 'package:ipotato_timer/models/task_model.dart';
 import 'package:ipotato_timer/screens/home_screen/add_task_modal.dart';
 import 'package:ipotato_timer/stores/timers_store.dart';
@@ -59,7 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: _timersStore.taskList.length,
                   itemBuilder: (context, i) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32.0,vertical: 20),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25.0, vertical: 20),
                       child: SingleTaskWidget(
                         index: i,
                       ),

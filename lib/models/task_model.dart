@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'task_model.freezed.dart';
 
@@ -8,6 +10,7 @@ class TaskModel with _$TaskModel {
     required String taskDescription,
     required bool taskComplete,
     required Duration taskDuration,
+    required Timer? ownTimer,
   }) = _TaskModel;
 
 }

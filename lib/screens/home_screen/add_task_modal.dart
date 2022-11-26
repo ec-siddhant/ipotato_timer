@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:ipotato_timer/database/db.dart';
 import 'package:ipotato_timer/models/task_model.dart';
 import 'package:ipotato_timer/stores/timers_store.dart';
 import 'package:ipotato_timer/widgets/custom_text_field.dart';
@@ -11,6 +12,7 @@ class AddTimerModal {
   late Duration maxDuration;
   var formKey = GlobalKey<FormState>();
   bool isAutoValidate = false;
+  final _myTimerDB = GetIt.I<MyTimerDatabase>();
 
   showAddTimerModalSheet(BuildContext buildContext) {
     showModalBottomSheet(
@@ -109,15 +111,31 @@ class AddTimerModal {
                                       ),
                                     ),
                                     onPressed: () {
-                                      final timersStore =
-                                          GetIt.I<TimersStore>();
-                                      timersStore.addTask(TaskModel(
-                                          taskName: taskTitleController.text,
-                                          taskDescription:
-                                              taskDescriptionController.text,
-                                          taskComplete: false,
-                                          taskDuration: maxDuration));
-                                      Navigator.pop(context);
+                                      if (maxDuration.inSeconds > 0) {
+                                        final timersStore =
+                                            GetIt.I<TimersStore>();
+                                        timersStore.addTask(TaskModel(
+                                            taskName: taskTitleController.text,
+                                            taskDescription:
+                                                taskDescriptionController.text,
+                                            taskComplete: false,
+                                            taskDuration: maxDuration,
+                                            ownTimer: null));
+
+                                        _myTimerDB.insertTask(TimersTableData(
+                                            title: taskTitleController.text,
+                                            description:
+                                                taskDescriptionController.text,
+                                            timeLeft: maxDuration.inSeconds,
+                                            finished: false));
+
+                                        Navigator.pop(context);
+                                      } else {
+                                        ScaffoldMessenger.of(buildContext)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    "Please Add Duration")));
+                                      }
                                     },
                                     child: Text(
                                       "Add Task",

@@ -24,7 +24,9 @@ class SingleTaskWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 32,),
+            const SizedBox(
+              height: 32,
+            ),
             Observer(
               builder: (context) {
                 if (!timersStore.taskList[index].taskComplete) {
@@ -52,7 +54,9 @@ class SingleTaskWidget extends StatelessWidget {
                         child: IconButton(
                           padding: const EdgeInsets.all(3),
                           constraints: const BoxConstraints(),
-                          onPressed: () {},
+                          onPressed: () {
+                            timersStore.setTaskAsComplete(index: index);
+                          },
                           icon: Icon(
                             Icons.stop,
                             color: Theme.of(context).colorScheme.onTertiary,
@@ -105,8 +109,7 @@ class SingleTaskWidget extends StatelessWidget {
               },
             ),
             Padding(
-              padding:
-              const EdgeInsets.only(right: 29.0, left: 32),
+              padding: const EdgeInsets.only(right: 29.0, left: 32),
               child: Text(
                 timersStore.taskList[index].taskName,
                 style: Theme.of(context)
@@ -116,8 +119,7 @@ class SingleTaskWidget extends StatelessWidget {
               ),
             ),
             Padding(
-              padding:
-              const EdgeInsets.only(right: 29.0, left: 32),
+              padding: const EdgeInsets.only(right: 29.0, left: 32),
               child: Text(
                 timersStore.taskList[index].taskDescription,
                 style: Theme.of(context)
@@ -126,36 +128,32 @@ class SingleTaskWidget extends StatelessWidget {
                     .copyWith(color: Theme.of(context).colorScheme.primary),
               ),
             ),
-            SizedBox(height: 5,),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context)
-                        .colorScheme
-                        .onTertiaryContainer,
-                    elevation: 0,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                  ),
-                  onPressed: () {
-                    final timersStore =
-                    GetIt.I<TimersStore>();
-                    timersStore.setTaskAsComplete(index: index);
-                  },
-                  child: Text(
-                    "Mark Complete",
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onInverseSurface),
-                  )),
+            const SizedBox(
+              height: 5,
             ),
+            if (timersStore.taskList[index].taskComplete)
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary:
+                          Theme.of(context).colorScheme.onTertiaryContainer,
+                      elevation: 0,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
+                    ),
+                    onPressed: () {
+                      timersStore.setTaskAsComplete(index: index);
+                    },
+                    child: Text(
+                      "Mark Complete",
+                      style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onInverseSurface),
+                    )),
+              ),
           ],
         ),
       ),
