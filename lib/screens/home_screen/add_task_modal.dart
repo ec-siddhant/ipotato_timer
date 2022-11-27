@@ -46,7 +46,7 @@ class AddTimerModal {
                                   padding: const EdgeInsets.only(
                                       left: 32.0, right: 64, top: 48),
                                   child: Form(
-                                    autovalidateMode: AutovalidateMode.disabled,
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
                                     key: formKey,
                                     child: Column(
                                       crossAxisAlignment:
@@ -133,7 +133,7 @@ class AddTimerModal {
                                             timerError = false;
                                           });
                                           final timersStore =
-                                              GetIt.I<TimersStore>();
+                                              GetIt.I<TasksStore>();
 
                                           final String taskID = DateTime.now()
                                               .microsecondsSinceEpoch

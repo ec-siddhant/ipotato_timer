@@ -18,7 +18,7 @@ Future<void> main() async {
 
 Future<void> syncTasksWithDatabase() async {
   final timerDB = getIt<MyTaskDatabase>();
-  final timersStore = getIt<TimersStore>();
+  final timersStore = getIt<TasksStore>();
   timersStore.addAllTasks(await timerDB.getAllTasks());
 }
 

@@ -5,7 +5,7 @@ import 'package:ipotato_timer/stores/timers_store.dart';
 final getIt = GetIt.instance;
 
 Future<void> initServices() async {
-  getIt.registerLazySingleton<TimersStore>(() =>TimersStore());
+  getIt.registerLazySingleton<TasksStore>(() =>TasksStore());
   getIt.registerLazySingleton<MyTaskDatabase>(() =>MyTaskDatabase());
 
 }

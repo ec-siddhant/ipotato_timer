@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_beep/flutter_beep.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:ipotato_timer/database/db.dart';
 import 'package:ipotato_timer/models/task_model.dart';
 import 'package:ipotato_timer/services/service.dart';
@@ -9,9 +9,9 @@ import 'package:mobx/mobx.dart';
 part 'timers_store.g.dart';
 
 // ignore: library_private_types_in_public_api
-class TimersStore = _TimersStore with _$TimersStore;
+class TasksStore = _TasksStore with _$TasksStore;
 
-abstract class _TimersStore with Store {
+abstract class _TasksStore with Store {
   @observable
   ObservableList<TaskModel> taskList = ObservableList<TaskModel>.of([]);
 
@@ -81,14 +81,8 @@ abstract class _TimersStore with Store {
   }
 
   void playSound() {
-    int times = 0;
-    Timer.periodic(const Duration(milliseconds: 500), (timer) {
-      if (times <= 7) {
-        FlutterBeep.beep();
-        times++;
-      } else {
-        timer.cancel();
-      }
-    });
+    AssetsAudioPlayer().open(
+      Audio("assets/sounds/never_gonna_give_you.mp3"),
+    );
   }
 }

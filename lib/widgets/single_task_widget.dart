@@ -20,7 +20,7 @@ class SingleTaskWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timersStore = getIt<TimersStore>;
+    final timersStore = getIt<TasksStore>;
 
     return Container(
       decoration: BoxDecoration(
