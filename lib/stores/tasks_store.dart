@@ -6,7 +6,7 @@ import 'package:ipotato_timer/models/task_model.dart';
 import 'package:ipotato_timer/services/service.dart';
 import 'package:mobx/mobx.dart';
 
-part 'timers_store.g.dart';
+part 'tasks_store.g.dart';
 
 // ignore: library_private_types_in_public_api
 class TasksStore = _TasksStore with _$TasksStore;

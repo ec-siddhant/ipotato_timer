@@ -4,13 +4,13 @@ import 'package:get_it/get_it.dart';
 import 'package:ipotato_timer/database/db.dart';
 import 'package:ipotato_timer/models/task_model.dart';
 import 'package:ipotato_timer/screens/home_screen/add_task_modal.dart';
-import 'package:ipotato_timer/stores/timers_store.dart';
+import 'package:ipotato_timer/stores/tasks_store.dart';
 import 'package:ipotato_timer/widgets/no_tasks_placeholder.dart';
 import 'package:ipotato_timer/widgets/single_task_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
-  final timersStore = GetIt.I<TasksStore>();
+  final tasksStore = GetIt.I<TasksStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -54,24 +54,24 @@ class HomeScreen extends StatelessWidget {
             builder: (context) {
               print("changed");
 
-              return timersStore.taskList.isEmpty
+              return tasksStore.taskList.isEmpty
                   ? const NoTasksPlaceHolder()
                   : ListView.builder(
-                itemCount: timersStore.taskList.length,
+                itemCount: tasksStore.taskList.length,
                 itemBuilder: (context, i) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 25.0, vertical: 20),
                     child: SingleTaskWidget(
-                      taskModel: timersStore.taskList[i],
+                      taskModel: tasksStore.taskList[i],
                       onTaskStopped: () {
-                        timersStore.setTaskAsComplete(index: i);
+                        tasksStore.setTaskAsComplete(index: i);
                       },
                       onTaskCompletePressed: () {
-                        timersStore.setTaskAsComplete(index: i);
+                        tasksStore.setTaskAsComplete(index: i);
                       },
                       onTaskPlayed: () {
-                        timersStore.reduceTaskTime(index: i);
+                        tasksStore.reduceTaskTime(index: i);
                       },),);
                 },
               );

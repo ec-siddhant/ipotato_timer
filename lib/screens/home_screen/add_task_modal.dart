@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ipotato_timer/database/db.dart';
 import 'package:ipotato_timer/models/task_model.dart';
-import 'package:ipotato_timer/stores/timers_store.dart';
+import 'package:ipotato_timer/stores/tasks_store.dart';
 import 'package:ipotato_timer/widgets/custom_text_field.dart';
 import 'package:ipotato_timer/widgets/duration_selector_widget.dart';
 
@@ -132,14 +132,14 @@ class AddTimerModal {
                                           setState(() {
                                             timerError = false;
                                           });
-                                          final timersStore =
+                                          final tasksStore =
                                               GetIt.I<TasksStore>();
 
                                           final String taskID = DateTime.now()
                                               .microsecondsSinceEpoch
                                               .toString();
 
-                                          timersStore.addTask(TaskModel(
+                                          tasksStore.addTask(TaskModel(
                                               taskID: taskID,
                                               taskName:
                                                   taskTitleController.text,

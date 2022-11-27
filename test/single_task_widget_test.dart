@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ipotato_timer/models/task_model.dart';
-import 'package:ipotato_timer/stores/timers_store.dart';
+import 'package:ipotato_timer/stores/tasks_store.dart';
 import 'package:ipotato_timer/widgets/single_task_widget.dart';
 import 'package:mockito/annotations.dart';
 

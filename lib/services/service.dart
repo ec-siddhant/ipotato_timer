@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:ipotato_timer/database/db.dart';
-import 'package:ipotato_timer/stores/timers_store.dart';
+import 'package:ipotato_timer/stores/tasks_store.dart';
 
 final getIt = GetIt.instance;
 

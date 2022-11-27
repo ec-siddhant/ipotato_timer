@@ -44,7 +44,7 @@ class MyTaskDatabase extends _$MyTaskDatabase {
   int get schemaVersion => 1;
 
   //READ
-  Future<List<TasksTableData>> getAllTasks() => select(tasksTable).get();
+  Future<List<dynamic>> getAllTasks() => select(tasksTable).get();
 
   //INSERT
   Future insertTask(TasksTableData task) => into(tasksTable).insert(task);

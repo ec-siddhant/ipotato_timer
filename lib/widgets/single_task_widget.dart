@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ipotato_timer/models/task_model.dart';
 import 'package:ipotato_timer/services/service.dart';
-import 'package:ipotato_timer/stores/timers_store.dart';
+import 'package:ipotato_timer/stores/tasks_store.dart';
 
 class SingleTaskWidget extends StatelessWidget {
   final TaskModel taskModel;
@@ -20,7 +20,7 @@ class SingleTaskWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timersStore = getIt<TasksStore>;
+    final tasksStore = getIt<TasksStore>;
 
     return Container(
       decoration: BoxDecoration(
