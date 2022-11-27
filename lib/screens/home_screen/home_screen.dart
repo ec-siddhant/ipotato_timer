@@ -57,8 +57,12 @@ class HomeScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 25.0, vertical: 20),
                       child: SingleTaskWidget(
-                        index: i,
-                      ),
+                          taskModel: timersStore.taskList[i],
+                          onTaskStopped:
+                              timersStore.setTaskAsComplete(index: i),
+                          onTaskCompletePressed:
+                              timersStore.setTaskAsComplete(index: i),
+                          onTaskPlayed: timersStore.reduceTaskTime(index: i)),
                     );
                   },
                 );

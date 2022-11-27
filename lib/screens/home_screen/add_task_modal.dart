@@ -13,9 +13,9 @@ class AddTimerModal {
   var formKey = GlobalKey<FormState>();
   bool isAutoValidate = false;
 
-  bool timerError = false;
-
   showAddTimerModalSheet(BuildContext buildContext) {
+    bool timerError = false;
+
     showModalBottomSheet(
       context: buildContext,
       enableDrag: false,
@@ -92,7 +92,8 @@ class AddTimerModal {
                                         ),
                                         if (timerError)
                                           Padding(
-                                            padding: const EdgeInsets.only(top: 8.0),
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
                                             child: Text(
                                               "Duration should be at least 1 second",
                                               style: Theme.of(context)

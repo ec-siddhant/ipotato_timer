@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get_it/get_it.dart';
+import 'package:ipotato_timer/models/task_model.dart';
+import 'package:ipotato_timer/services/service.dart';
 import 'package:ipotato_timer/stores/timers_store.dart';
 
 class SingleTaskWidget extends StatelessWidget {
-  final int index;
-  final timersStore = GetIt.I<TimersStore>();
+  final TaskModel taskModel;
+  final Function()? onTaskStopped;
+  final Function()? onTaskCompletePressed;
+  final Function()? onTaskPlayed;
 
-  SingleTaskWidget({Key? key, required this.index}) : super(key: key);
+  const SingleTaskWidget(
+      {Key? key,
+      required this.taskModel,
+      this.onTaskStopped,
+      this.onTaskCompletePressed,
+      this.onTaskPlayed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final timersStore = getIt<TimersStore>;
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -27,94 +37,91 @@ class SingleTaskWidget extends StatelessWidget {
             const SizedBox(
               height: 32,
             ),
-            Observer(
-              builder: (context) {
-                if (!timersStore.taskList[index].taskComplete) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Spacer(),
-                      Text(
-                        "${timersStore.taskList[index].taskDuration.inHours.toString().padLeft(2, "0")}:${timersStore.taskList[index].taskDuration.inMinutes.remainder(60).toString().padLeft(2, "0")}:${timersStore.taskList[index].taskDuration.inSeconds.remainder(60).toString().padLeft(2, "0")}",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineLarge!
-                            .copyWith(
-                                color: Theme.of(context).colorScheme.primary),
+            if (!taskModel.taskComplete)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  Text(
+                    "${taskModel.taskDuration.inHours.toString().padLeft(2, "0")}:${taskModel.taskDuration.inMinutes.remainder(60).toString().padLeft(2, "0")}:${taskModel.taskDuration.inSeconds.remainder(60).toString().padLeft(2, "0")}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineLarge!
+                        .copyWith(color: Theme.of(context).colorScheme.primary),
+                  ),
+                  const SizedBox(
+                    width: 7,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: IconButton(
+                      key: const ValueKey("StopButton_SingleTaskWidget"),
+                      padding: const EdgeInsets.all(3),
+                      constraints: const BoxConstraints(),
+                      onPressed: () {
+                        onTaskStopped!();
+                      },
+                      icon: Icon(
+                        Icons.stop,
+                        color: Theme.of(context).colorScheme.onTertiary,
                       ),
-                      const SizedBox(
-                        width: 7,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 7,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: IconButton(
+                      key: const ValueKey("PlayButton_SingleTaskWidget"),
+                      padding: const EdgeInsets.all(3),
+                      constraints: const BoxConstraints(),
+                      onPressed: () {
+                        onTaskPlayed!();
+                      },
+                      icon: Icon(
+                        Icons.play_arrow,
+                        color: Theme.of(context).colorScheme.onTertiary,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.tertiary,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: IconButton(
-                          padding: const EdgeInsets.all(3),
-                          constraints: const BoxConstraints(),
-                          onPressed: () {
-                            timersStore.setTaskAsComplete(index: index);
-                          },
-                          icon: Icon(
-                            Icons.stop,
-                            color: Theme.of(context).colorScheme.onTertiary,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 7,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.tertiary,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: IconButton(
-                          padding: const EdgeInsets.all(3),
-                          constraints: const BoxConstraints(),
-                          onPressed: () {
-                            timersStore.reduceTaskTime(index: index);
-                          },
-                          icon: Icon(
-                            Icons.play_arrow,
-                            color: Theme.of(context).colorScheme.onTertiary,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                    ],
-                  );
-                } else {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset('assets/icons/isoundwave.svg'),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                        child: Text(
-                          'FINISHED',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineLarge!
-                              .copyWith(
-                                  color: Theme.of(context).colorScheme.primary),
-                        ),
-                      ),
-                      SvgPicture.asset('assets/icons/isoundwave.svg'),
-                    ],
-                  );
-                }
-              },
-            ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                ],
+              )
+            else
+              Row(
+                key: const ValueKey("FinishedTaskRow_SingleTaskWidget"),
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset('assets/icons/isoundwave.svg'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                    child: Text(
+                      'FINISHED',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineLarge!
+                          .copyWith(
+                              color: Theme.of(context).colorScheme.primary),
+                    ),
+                  ),
+                  SvgPicture.asset('assets/icons/isoundwave.svg'),
+                ],
+              ),
             Padding(
               padding: const EdgeInsets.only(right: 29.0, left: 32),
               child: Text(
-                timersStore.taskList[index].taskName,
+                taskModel.taskName,
                 style: Theme.of(context)
                     .textTheme
                     .titleLarge!
@@ -124,7 +131,7 @@ class SingleTaskWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 29.0, left: 32),
               child: Text(
-                timersStore.taskList[index].taskDescription,
+                taskModel.taskDescription,
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium!
@@ -134,7 +141,7 @@ class SingleTaskWidget extends StatelessWidget {
             const SizedBox(
               height: 45,
             ),
-            if (timersStore.taskList[index].taskComplete)
+            if (taskModel.taskComplete)
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 50,
@@ -148,7 +155,7 @@ class SingleTaskWidget extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      timersStore.setTaskAsComplete(index: index);
+                      onTaskCompletePressed!();
                     },
                     child: Text(
                       "Mark Complete",
